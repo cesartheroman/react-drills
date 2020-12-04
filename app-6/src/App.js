@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { Todo } from './Todo';
 
 function App() {
+  const [list, setList] = useState([]);
+  const [task, setTask] = useState('');
+
+  const handleChange = (value) => {
+    setTask(value);
+  };
+
+  const addTask = () => {
+    setList((previousList) => {
+      return [...previousList, task];
+    });
+    setTask('');
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>My to-do list:</h1>
+      <div>
+        <input
+          type="text"
+          value={task}
+          placeholder="Enter new task"
+          onChange={(e) => handleChange(e.target.value)}
+        ></input>
+        <button onClick={addTask}>Add</button>
+      </div>
+
+      <br />
+
+      <Todo list={list} />
     </div>
   );
 }
