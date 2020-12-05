@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
+  const [data, setData] = useState({
+    id: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    avatar: '',
+  });
+
+  useEffect(() => {
+    axios
+      .get('https://reqres.in/api/users/2')
+      .then(({ data }) => {
+        const realData = data.data;
+        setData({
+          id: realData.id,
+          email: realData.email,
+          first_name: realData.first_name,
+          last_name: realData.last_name,
+          avatar: realData.avatar,
+        });
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <img src={data.avatar}></img>
+      <h1>
+        Name: {data.first_name} {data.last_name}
+      </h1>
+      <h1>Id: {data.id}</h1>
+      <h1>Email: {data.email}</h1>
     </div>
   );
 }
